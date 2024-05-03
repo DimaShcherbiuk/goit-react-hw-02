@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Description from "../Description/Description";
 import Options from "../Options/Options";
 import Feedback from "../Feedback/Feedback";
@@ -12,17 +12,14 @@ const initeState = {
 
 function App() {
   const [feedbackPoint, setfeedbackPoint] = useState(() => {
-    const storedFeedbackData = localStorage.getItem("feedback");
-    return JSON.parse(storedFeedbackData) ?? initeState;
+    const storedFeedbackPoint = localStorage.getItem("feedback");
+    return JSON.parse(storedFeedbackPoint) ?? initeState;
   });
 
-  // const updateFeedback = feedbackType => {
-  //   setfeedbackPoint(feedbackPoint + 1);
-  // }
   const updateFeedback = (feedbackType) => {
-    setfeedbackPoint((prevFeedbackData) => ({
-      ...prevFeedbackData,
-      [feedbackType]: prevFeedbackData[feedbackType] + 1,
+    setfeedbackPoint((prevFeedbackPoint) => ({
+      ...prevFeedbackPoint,
+      [feedbackType]: prevFeedbackPoint[feedbackType] + 1,
     }));
   };
 
@@ -31,9 +28,17 @@ function App() {
     0
   );
 
+  const positiveFeedback = Math.round(
+    ((feedbackPoint.good + feedbackPoint.neutral) / totalFeedback) * 100
+  );
+
   const resetFeedback = () => {
     setfeedbackPoint(initeState);
   };
+
+  useEffect(() => {
+    localStorage.setItem("feedback", JSON.stringify(feedbackPoint));
+  }, [feedbackPoint]);
 
   return (
     <>
@@ -43,11 +48,15 @@ function App() {
         totalFeedback={totalFeedback}
         resetFeedback={resetFeedback}
       />
-      <Feedback
-        {...feedbackPoint}
+      {totalFeedback !== 0 ? (
+        <Feedback
+          {...feedbackPoint}
           total={totalFeedback}
-      />
-      <Notification />
+          positiveFeedback={positiveFeedback}
+        />
+      ) : (
+        <Notification />
+      )}
     </>
   );
 }

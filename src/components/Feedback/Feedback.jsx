@@ -1,12 +1,12 @@
 
-export default function Feedback({ good, neutral, bad }) {
+export default function Feedback({ good, neutral, bad, total, positiveFeedback}) {
   return (
     <ul>
       <li>Good: {good}</li>
       <li>Neutral: {neutral}</li>
       <li>Bad: {bad}</li>
-      {/* <li>Total: {}</li> */}
-      {/* <li>Positive: {}%</li> */}
+      <li>Total: {total}</li>
+      <li>Positive: {positiveFeedback}%</li>
     </ul>
   );
 }
