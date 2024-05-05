@@ -3,6 +3,7 @@ import Description from "../Description/Description";
 import Options from "../Options/Options";
 import Feedback from "../Feedback/Feedback";
 import Notification from "../Notification/Notification";
+import css from "./App.module.css";
 
 const initeState = {
   good: 0,
@@ -41,7 +42,7 @@ function App() {
   }, [feedbackPoint]);
 
   return (
-    <>
+    <div className={css.container}>
       <Description />
       <Options
         updateFeedback={updateFeedback}
@@ -57,7 +58,7 @@ function App() {
       ) : (
         <Notification />
       )}
-    </>
+    </div>
   );
 }
 
